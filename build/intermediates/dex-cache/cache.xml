@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Applications/Android Studio.app/Contents/gradle/gradle-1.10/caches/modules-2/files-2.1/io.realm/realm-android/0.84.1/b86074e6240f0f876701810a047b0261f7bd060e/realm-android-0.84.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="b86074e6240f0f876701810a047b0261f7bd060e">
+        <dex dex="/Users/marek/projekty/TodayList/app/build/intermediates/pre-dexed/debug/realm-android-0.84.1-56bdb3c98a99577da80d7b335e023fb466d1294f.jar" />
+    </item>
+
+</items>
