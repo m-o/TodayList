@@ -14,7 +14,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.marek.todaylist.R;
-import com.example.marek.todaylist.TasksAdapter;
+import com.example.marek.todaylist.TodayTasksAdapter;
+import com.example.marek.todaylist.Utils;
+import com.example.marek.todaylist.VerticalSpaceItemDecoration;
 import com.example.marek.todaylist.models.Task;
 
 import io.realm.Realm;
@@ -24,13 +26,13 @@ import io.realm.RealmResults;
  * Created by marek on 31/10/15.
  */
 public class TodayFragment extends Fragment{
+    private static final int VERTICAL_ITEM_SPACE = 10;
     private RecyclerView mRecyclerView;
-    private TasksAdapter mAdapter;
+    private TodayTasksAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     AlertDialog dialog;
     private View rootView;
     private RealmResults<Task> data;
-    private Realm realm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,8 +43,9 @@ public class TodayFragment extends Fragment{
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         getData();
-        mAdapter = new TasksAdapter(data, realm, getContext());
+        mAdapter = new TodayTasksAdapter(data, getContext());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
 
         createAddTaskDialog();
 
@@ -67,7 +70,7 @@ public class TodayFragment extends Fragment{
 
     private void getData(){
         Realm realm = Realm.getInstance(this.getContext());
-        data = realm.where(Task.class).equalTo("today",true).equalTo("finished",false).findAll();
+        data = realm.where(Task.class).equalTo("state",Utils.TASK_STATE_TODAY).findAll();
     }
 
     private void showAddTaskDialog() {
@@ -106,7 +109,8 @@ public class TodayFragment extends Fragment{
     private void addTask(String name, String description, boolean checked){
         Realm realm = Realm.getInstance(this.getContext());
         realm.beginTransaction();
-        Task task = new Task(name,description, checked, false);
+        int state = checked ? Utils.TASK_STATE_TODAY : Utils.TASK_STATE_BACKLOG;
+        Task task = new Task(name,description, state);
         realm.copyToRealm(task);
         realm.commitTransaction();
         realm.close();

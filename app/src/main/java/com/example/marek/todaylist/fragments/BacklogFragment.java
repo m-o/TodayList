@@ -15,7 +15,8 @@ import android.widget.EditText;
 
 import com.example.marek.todaylist.BacklogTasksAdapter;
 import com.example.marek.todaylist.R;
-import com.example.marek.todaylist.TasksAdapter;
+import com.example.marek.todaylist.Utils;
+import com.example.marek.todaylist.VerticalSpaceItemDecoration;
 import com.example.marek.todaylist.models.Task;
 
 import io.realm.Realm;
@@ -25,6 +26,7 @@ import io.realm.RealmResults;
  * Created by marek on 22/11/15.
  */
 public class BacklogFragment extends Fragment{
+    private int VERTICAL_ITEM_SPACE = 8;
     private RecyclerView mRecyclerView;
     private BacklogTasksAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -44,6 +46,7 @@ public class BacklogFragment extends Fragment{
         getData();
         mAdapter = new BacklogTasksAdapter(data, realm, getContext());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +69,7 @@ public class BacklogFragment extends Fragment{
 
     private void getData(){
         Realm realm = Realm.getInstance(this.getContext());
-        data = realm.where(Task.class).equalTo("today",false).equalTo("finished",false).findAll();
+        data = realm.where(Task.class).equalTo("state",Utils.TASK_STATE_BACKLOG).findAll();
     }
 
     private void showAddTaskDialog() {
@@ -105,7 +108,8 @@ public class BacklogFragment extends Fragment{
     private void addTask(String name, String description, boolean checked){
         Realm realm = Realm.getInstance(this.getContext());
         realm.beginTransaction();
-        Task task = new Task(name,description, checked, false);
+        int state = checked == true ? Utils.TASK_STATE_TODAY : Utils.TASK_STATE_BACKLOG;
+        Task task = new Task(name,description, state);
         realm.copyToRealm(task);
         realm.commitTransaction();
         realm.close();

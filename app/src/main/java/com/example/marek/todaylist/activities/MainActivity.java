@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import com.example.marek.todaylist.R;
 import com.example.marek.todaylist.fragments.BacklogFragment;
-import com.example.marek.todaylist.fragments.DeletedFragment;
+import com.example.marek.todaylist.fragments.FinishedFragment;
 import com.example.marek.todaylist.fragments.TodayFragment;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     fragment = new BacklogFragment();
                     break;
                 case 2:
-                    fragment = new DeletedFragment();
+                    fragment = new FinishedFragment();
                     break;
             }
             return fragment;

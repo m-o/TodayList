@@ -15,7 +15,8 @@ import android.widget.EditText;
 
 import com.example.marek.todaylist.DeletedTasksAdapter;
 import com.example.marek.todaylist.R;
-import com.example.marek.todaylist.TasksAdapter;
+import com.example.marek.todaylist.Utils;
+import com.example.marek.todaylist.VerticalSpaceItemDecoration;
 import com.example.marek.todaylist.models.Task;
 
 import io.realm.Realm;
@@ -24,7 +25,8 @@ import io.realm.RealmResults;
 /**
  * Created by marek on 31/10/15.
  */
-public class DeletedFragment extends Fragment{
+public class FinishedFragment extends Fragment{
+    private static final int VERTICAL_ITEM_SPACE = 10;
     private RecyclerView mRecyclerView;
     private DeletedTasksAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -41,6 +43,7 @@ public class DeletedFragment extends Fragment{
 
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
         getData();
         mAdapter = new DeletedTasksAdapter(data, realm, getContext());
         mRecyclerView.setAdapter(mAdapter);
@@ -68,7 +71,7 @@ public class DeletedFragment extends Fragment{
 
     private void getData(){
         Realm realm = Realm.getInstance(this.getContext());
-        data = realm.where(Task.class).equalTo("finished",true).findAll();
+        data = realm.where(Task.class).equalTo("state",Utils.TASK_STATE_FINISHED).findAll();
     }
 
     private void showAddTaskDialog() {
@@ -107,7 +110,8 @@ public class DeletedFragment extends Fragment{
     private void addTask(String name, String description, boolean checked){
         Realm realm = Realm.getInstance(this.getContext());
         realm.beginTransaction();
-        Task task = new Task(name,description, checked, false);
+        int state = checked == true ? Utils.TASK_STATE_TODAY : Utils.TASK_STATE_BACKLOG;
+        Task task = new Task(name,description, state);
         realm.copyToRealm(task);
         realm.commitTransaction();
         realm.close();

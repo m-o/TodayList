@@ -74,7 +74,7 @@ public class BacklogTasksAdapter extends RecyclerView.Adapter<BacklogTasksAdapte
                 Realm realm = Realm.getInstance(context);
                 realm.beginTransaction();
                 Task task = realmResults.get(position);
-                task.setToday(true);
+                task.setState(Utils.TASK_STATE_TODAY);
                 realm.commitTransaction();
                 realm.close();
                 notifyDataSetChanged();

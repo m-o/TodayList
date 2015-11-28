@@ -59,7 +59,7 @@ public class DeletedTasksAdapter extends RecyclerView.Adapter<DeletedTasksAdapte
 
     @Override
     public DeletedTasksAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_layout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.finished_task_layout, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -67,14 +67,14 @@ public class DeletedTasksAdapter extends RecyclerView.Adapter<DeletedTasksAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mTextView.setText(realmResults.get(position).getName());
-        holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                CheckBox c = (CheckBox) arg0.findViewById(R.id.checkbox);
-                c.setChecked(false);
-                addTaskToBacklog(position);
-            }
-        });
+//        holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View arg0) {
+//                CheckBox c = (CheckBox) arg0.findViewById(R.id.checkbox);
+//                c.setChecked(false);
+//                addTaskToBacklog(position);
+//            }
+//        });
     }
 
     @Override
@@ -88,7 +88,7 @@ public class DeletedTasksAdapter extends RecyclerView.Adapter<DeletedTasksAdapte
     public void addTaskToBacklog(int item){
         Realm realm = Realm.getInstance(context);
         realm.beginTransaction();
-        realmResults.get(item).setFinished(false);
+//        realmResults.get(item).setFinished(false);
         realm.commitTransaction();
         realm.close();
         notifyDataSetChanged();
