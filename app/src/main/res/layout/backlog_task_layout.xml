@@ -5,7 +5,8 @@
     android:paddingTop="16dp"
     android:paddingBottom="20dp"
     android:paddingRight="16dp"
-    android:paddingLeft="16dp">
+    android:paddingLeft="16dp"
+    android:background="@color/white">
    <TextView
        android:id="@+id/add_to_today_button"
        android:layout_width="wrap_content"

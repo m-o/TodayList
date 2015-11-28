@@ -1,4 +1,4 @@
-package com.example.marek.todaylist;
+package com.example.marek.todaylist.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.marek.todaylist.R;
+import com.example.marek.todaylist.Utils;
 import com.example.marek.todaylist.models.Task;
-
-import org.w3c.dom.Text;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -21,7 +21,7 @@ import io.realm.RealmResults;
 /**
  * Created by marek on 01/11/15.
  */
-public class TodayTasksAdapter extends RecyclerView.Adapter<TodayTasksAdapter.ViewHolder> {
+public class TodayTasksAdapter extends AbstractTaskAdapter<TodayTasksAdapter.TodayViewHolder> {
 
     RealmResults<Task> realmResults;
     private RealmChangeListener realmListener;
@@ -44,7 +44,7 @@ public class TodayTasksAdapter extends RecyclerView.Adapter<TodayTasksAdapter.Vi
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class TodayViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public boolean expanded;
         public TextView mTextView;
@@ -55,7 +55,7 @@ public class TodayTasksAdapter extends RecyclerView.Adapter<TodayTasksAdapter.Vi
         public TextView mBacklogButton;
         public TextView mDeleteButton;
 
-        public ViewHolder(View v) {
+        public TodayViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.text);
             mDescriptionText = (TextView) v.findViewById(R.id.description);
@@ -73,16 +73,16 @@ public class TodayTasksAdapter extends RecyclerView.Adapter<TodayTasksAdapter.Vi
     }
 
     @Override
-    public TodayTasksAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TodayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.today_task_layout, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
+        TodayViewHolder vh = new TodayViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final TodayViewHolder holder, final int position) {
         final Task task = realmResults.get(position);
         holder.mTextView.setText(task.getName());
         holder.mDescriptionText.setText(getShortText(task.getDescription()));
